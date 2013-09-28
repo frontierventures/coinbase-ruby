@@ -37,7 +37,7 @@ module Coinbase
 
     # Buttons
 
-    def create_button name, price, description=nil, custom=nil, options={}
+    def create_button name, price, description=nil, custom=nil, callback_url=nil, options={}
       options[:button]                        ||= {}
       options[:button][:name]                 ||= name
       price = price.to_money unless price.is_a?(Money)
@@ -45,6 +45,7 @@ module Coinbase
       options[:button][:price_currency_iso]   ||= price.currency.iso_code
       options[:button][:description]          ||= description
       options[:button][:custom]               ||= custom
+      options[:button][:callback_url]         ||= callback_url
       r = post '/buttons', options
       if r.success?
         r.embed_html = "<div class=\"coinbase-button\" data-code=\"#{r.button.code}\"></div><script src=\"https://coinbase.com/assets/button.js\" type=\"text/javascript\"></script>"
